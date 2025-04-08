@@ -30,8 +30,8 @@
                                 <div class="flight-info">
                                     <p><i class="fas fa-plane-departure me-2"></i><strong>From:</strong> {{ flight.origin }}</p>
                                     <p><i class="fas fa-plane-arrival me-2"></i><strong>To:</strong> {{ flight.destination }}</p>
-                                    <p><i class="far fa-clock me-2"></i><strong>Departure:</strong> {{ flight.departure_time }}</p>
-                                    <p><i class="fas fa-clock me-2"></i><strong>Arrival:</strong> {{ flight.arrival_time }}</p>
+                                    <p><i class="far fa-clock me-2"></i><strong>Departure:</strong> {{ flight.departure_time|date_format('%d %b %Y, %H:%M') }}</p>
+                                    <p><i class="fas fa-clock me-2"></i><strong>Arrival:</strong> {{ flight.arrival_time|date_format('%d %b %Y, %H:%M') }}</p>
                                 </div>
                                 <div class="flight-price">${{ flight.price }}</div>
                             </div>

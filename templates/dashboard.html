@@ -47,7 +47,7 @@
                                         <td>{{ booking.id }}</td>
                                         <td><span class="badge bg-primary">{{ booking.flight_number }}</span></td>
                                         <td>{{ booking.origin }} <i class="fas fa-arrow-right mx-1 text-muted"></i> {{ booking.destination }}</td>
-                                        <td>{{ booking.departure_time }}</td>
+                                        <td>{{ booking.departure_time|date_format('%d %b %Y, %H:%M') }}</td>
                                         <td>{{ booking.total_passengers }}</td>
                                         <td><strong>${{ booking.total_price }}</strong></td>
                                         <td>

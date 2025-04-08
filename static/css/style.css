@@ -1,50 +1,66 @@
 :root {
-    --primary-color: #4361ee;
-    --secondary-color: #3f37c9;
-    --accent-color: #f72585;
-    --light-bg: #f8f9fa;
-    --dark-text: #212529;
-    --light-text: #ffffff;
-    --border-color: #dee2e6;
-    --hover-color: #3a0ca3;
+    --primary-color: #6c63ff;
+    --primary-color-dark: #5046e5;
+    --secondary-color: #4a47a3;
+    --accent-color: #ff6b6b;
+    --dark-bg: #121212;
+    --card-bg: #1e1e1e;
+    --header-bg: #242424;
+    --card-header: #2a2a2a;
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --text-muted: #8b8b8b;
+    --border-color: #333333;
+    --hover-color: #7367ff;
+    --success-color: #4caf50;
+    --info-color: #2196f3;
+    --warning-color: #ff9800;
+    --danger-color: #f44336;
 }
 
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
-    color: var(--dark-text);
-    background-color: #f5f7fa;
+    color: var(--text-primary);
+    background-color: var(--dark-bg);
 }
 
 /* Navbar styles */
 .navbar {
-    background-color: var(--primary-color);
+    background-color: var(--header-bg);
     padding: 0.8rem 1rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-brand {
     font-weight: 700;
     font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.navbar-dark .navbar-brand {
+    color: var(--primary-color);
 }
 
 .nav-link {
     font-weight: 500;
     padding: 0.5rem 1rem !important;
     transition: all 0.3s;
+    color: var(--text-primary) !important;
 }
 
 .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.08);
     border-radius: 4px;
+    color: var(--primary-color) !important;
 }
 
 /* Hero Section */
 .hero {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/static/img/airplane.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/static/img/airplane.jpg');
     background-size: cover;
     background-position: center;
-    color: var(--light-text);
+    color: var(--text-primary);
     text-align: center;
     padding: 7rem 0;
     border-radius: 0 0 20px 20px;
@@ -56,6 +72,7 @@ body {
     font-weight: 700;
     margin-bottom: 1.5rem;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    color: var(--text-primary);
 }
 
 .hero p {
@@ -64,32 +81,37 @@ body {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+    color: var(--text-secondary);
 }
 
 /* Cards */
 .card {
     border: none;
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s;
     margin-bottom: 1.5rem;
+    background-color: var(--card-bg);
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
 }
 
 .card-header {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--card-header);
+    color: var(--text-primary);
     font-weight: 600;
     padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .card-body {
     padding: 1.5rem;
+    background-color: var(--card-bg);
+    color: var(--text-primary);
 }
 
 /* Flight Cards */
@@ -100,19 +122,20 @@ body {
 }
 
 .flight-card {
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s;
     height: 100%;
     display: flex;
     flex-direction: column;
+    border: 1px solid var(--border-color);
 }
 
 .flight-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 .flight-card-header {
@@ -129,11 +152,13 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    background-color: var(--card-bg);
 }
 
 .flight-info {
     margin-bottom: 1rem;
     flex-grow: 1;
+    color: var(--text-primary);
 }
 
 .flight-price {
@@ -145,7 +170,7 @@ body {
 }
 
 .flight-card-footer {
-    background-color: #f8f9fa;
+    background-color: var(--card-header);
     padding: 1rem;
     text-align: center;
     border-top: 1px solid var(--border-color);
@@ -162,11 +187,23 @@ body {
 .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
+    color: white;
 }
 
 .btn-primary:hover {
     background-color: var(--hover-color);
     border-color: var(--hover-color);
+}
+
+.btn-secondary {
+    background-color: var(--card-header);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background-color: #3a3a3a;
+    border-color: #444444;
 }
 
 .btn-accent {
@@ -176,14 +213,15 @@ body {
 }
 
 .btn-accent:hover {
-    background-color: #db0a5b;
-    border-color: #db0a5b;
+    background-color: #ff5252;
+    border-color: #ff5252;
     color: white;
 }
 
 .btn-outline-primary {
     color: var(--primary-color);
     border-color: var(--primary-color);
+    background-color: transparent;
 }
 
 .btn-outline-primary:hover {
@@ -191,13 +229,25 @@ body {
     color: white;
 }
 
+.btn-light {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: transparent;
+    color: var(--text-primary);
+}
+
+.btn-light:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--primary-color);
+}
+
 /* Search Form */
 .search-form {
-    background-color: white;
+    background-color: var(--card-bg);
     border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
     padding: 1.5rem;
     margin-bottom: 2.5rem;
+    border: 1px solid var(--border-color);
 }
 
 .search-inputs {
@@ -207,51 +257,129 @@ body {
 }
 
 /* Form elements */
-.form-control {
+.form-control, .form-select {
     padding: 0.8rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
     font-size: 1rem;
     transition: border-color 0.3s;
+    background-color: var(--header-bg);
+    color: var(--text-primary);
 }
 
-.form-control:focus {
+.form-control:focus, .form-select:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+    background-color: var(--header-bg);
+    color: var(--text-primary);
 }
 
 .form-label {
     font-weight: 500;
     margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.input-group-text {
+    background-color: var(--header-bg);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
 }
 
 /* Tables */
 .table {
     width: 100%;
     margin-bottom: 1.5rem;
+    color: var(--text-primary);
 }
 
 .table th {
     font-weight: 600;
-    background-color: #f8f9fa;
+    background-color: var(--card-header);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.table td {
+    border-color: var(--border-color);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Alerts */
+.alert {
+    border: none;
+    border-radius: 8px;
+}
+
+.alert-success {
+    background-color: rgba(76, 175, 80, 0.15);
+    color: #81c784;
+}
+
+.alert-danger {
+    background-color: rgba(244, 67, 54, 0.15);
+    color: #e57373;
+}
+
+.alert-info {
+    background-color: rgba(33, 150, 243, 0.15);
+    color: #64b5f6;
+}
+
+.alert-warning {
+    background-color: rgba(255, 152, 0, 0.15);
+    color: #ffb74d;
+}
+
+/* Badges */
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.7em;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.bg-light {
+    background-color: var(--card-header) !important;
+    color: var(--text-primary) !important;
+}
+
+/* List groups */
+.list-group-item {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
 }
 
 /* Footer */
 footer {
-    background-color: #212529;
-    color: white;
+    background-color: var(--header-bg);
+    color: var(--text-primary);
     padding: 3rem 0;
     margin-top: 3rem;
 }
 
 footer a {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
     text-decoration: none;
     transition: color 0.3s;
 }
 
 footer a:hover {
-    color: white;
+    color: var(--primary-color);
     text-decoration: none;
 }
 
@@ -259,7 +387,7 @@ footer a:hover {
     display: inline-block;
     height: 40px;
     width: 40px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.08);
     border-radius: 50%;
     line-height: 40px;
     text-align: center;
@@ -269,6 +397,42 @@ footer a:hover {
 .social-icons a:hover {
     background-color: var(--primary-color);
     transform: translateY(-3px);
+}
+
+/* Text colors */
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.text-white {
+    color: var(--text-primary) !important;
+}
+
+/* Background utilities */
+.bg-light {
+    background-color: var(--card-header) !important;
+}
+
+.bg-dark {
+    background-color: var(--dark-bg) !important;
+}
+
+/* Progress */
+.progress {
+    background-color: var(--border-color);
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+}
+
+/* Spinner */
+.spinner-border {
+    color: var(--primary-color);
 }
 
 /* Responsive */

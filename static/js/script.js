@@ -126,6 +126,28 @@ function updatePassengerForms() {
     updateTotalPrice();
 }
 
+// Format date helper
+function formatDate(dateString) {
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return dateString; // Return original if invalid
+        }
+        // Format as "DD MMM YYYY, HH:MM" (no seconds)
+        return date.toLocaleString('en-US', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: false
+        });
+    } catch (e) {
+        console.error("Error formatting date:", e);
+        return dateString;
+    }
+}
+
 // Live search for flights using AJAX
 function liveSearch() {
     const origin = document.getElementById('origin')?.value || '';
@@ -161,8 +183,8 @@ function liveSearch() {
             
             // Display each flight
             flights.forEach(flight => {
-                const departureDate = new Date(flight.departure_time).toLocaleString();
-                const arrivalDate = new Date(flight.arrival_time).toLocaleString();
+                const departureDate = formatDate(flight.departure_time);
+                const arrivalDate = formatDate(flight.arrival_time);
                 
                 const flightCard = document.createElement('div');
                 flightCard.className = 'flight-card';

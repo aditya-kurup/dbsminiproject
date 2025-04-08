@@ -39,11 +39,11 @@
                             <div class="row g-3">
                                 <div class="col-sm-6">
                                     <p class="mb-1"><strong><i class="far fa-clock me-2 text-muted"></i>Departure:</strong></p>
-                                    <p>{{ booking.departure_time }}</p>
+                                    <p>{{ booking.departure_time|date_format('%d %b %Y, %H:%M') }}</p>
                                 </div>
                                 <div class="col-sm-6">
                                     <p class="mb-1"><strong><i class="fas fa-clock me-2 text-muted"></i>Arrival:</strong></p>
-                                    <p>{{ booking.arrival_time }}</p>
+                                    <p>{{ booking.arrival_time|date_format('%d %b %Y, %H:%M') }}</p>
                                 </div>
                                 <div class="col-sm-6">
                                     <p class="mb-1"><strong><i class="fas fa-users me-2 text-muted"></i>Passengers:</strong></p>

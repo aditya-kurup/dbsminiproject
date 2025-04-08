@@ -22,12 +22,16 @@ def search_flights(origin=None, destination=None, date=None):
     
     if date:
         # Match flights on the specified date
-        date_obj = datetime.strptime(date, "%Y-%m-%d")
-        start_date = date_obj.strftime("%Y-%m-%d 00:00:00")
-        end_date = date_obj.strftime("%Y-%m-%d 23:59:59")
-        query += " AND departure_time BETWEEN ? AND ?"
-        params.append(start_date)
-        params.append(end_date)
+        try:
+            date_obj = datetime.strptime(date, "%Y-%m-%d")
+            start_date = date_obj.strftime("%Y-%m-%d 00:00:00")
+            end_date = date_obj.strftime("%Y-%m-%d 23:59:59")
+            query += " AND departure_time BETWEEN ? AND ?"
+            params.append(start_date)
+            params.append(end_date)
+        except ValueError:
+            # Handle invalid date format
+            print(f"Invalid date format: {date}")
     
     # Only show flights that still have seats available
     query += " AND available_seats > 0"

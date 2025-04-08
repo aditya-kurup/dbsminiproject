@@ -96,6 +96,12 @@
         };
     }
     
+    // Format date function
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return new Date(dateString).toLocaleString(undefined, options);
+    }
+    
     // Live search for flights using AJAX
     function liveSearch() {
         const origin = document.getElementById('origin').value;
@@ -129,8 +135,8 @@
                 
                 // Display each flight
                 flights.forEach(flight => {
-                    const departureDate = new Date(flight.departure_time).toLocaleString();
-                    const arrivalDate = new Date(flight.arrival_time).toLocaleString();
+                    const departureDate = formatDate(flight.departure_time);
+                    const arrivalDate = formatDate(flight.arrival_time);
                     
                     const flightCard = document.createElement('div');
                     flightCard.className = 'flight-card';

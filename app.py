@@ -195,22 +195,47 @@ def server_error(e):
 # Format date filter for templates
 @app.template_filter('date_format')
 def date_format(value, format='%Y-%m-%d %H:%M'):
+    if value is None:
+        return ""
+    
     if isinstance(value, str):
         try:
-            value = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
-        except ValueError:
-            value = datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f')
-    return value.strftime(format)
+            # Try different date formats with and without microseconds
+            for fmt in ['%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M']:
+                try:
+                    value = datetime.strptime(value, fmt)
+                    break
+                except ValueError:
+                    continue
+        except Exception as e:
+            print(f"Error parsing date: {e}")
+            return value
+    
+    try:
+        return value.strftime(format)
+    except Exception as e:
+        print(f"Error formatting date: {e}")
+        return str(value)
 
 # Add datetime filter to convert string to datetime object
 @app.template_filter('datetime')
 def parse_datetime(value):
+    if value is None:
+        return None
+        
     if isinstance(value, str):
         try:
-            return datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
-        except ValueError:
-            # Handle timestamps with microseconds
-            return datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f')
+            # Try different date formats with and without microseconds
+            for fmt in ['%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M']:
+                try:
+                    return datetime.strptime(value, fmt)
+                except ValueError:
+                    continue
+            # If no format matches, return the original string
+            return value
+        except Exception as e:
+            print(f"Error parsing datetime: {e}")
+            return value
     return value
 
 if __name__ == '__main__':

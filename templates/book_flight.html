@@ -32,8 +32,8 @@
                                     <p class="small text-muted mb-0">Destination</p>
                                 </div>
                             </div>
-                            <p><i class="far fa-clock me-2 text-muted"></i><strong>Departure:</strong> {{ flight.departure_time }}</p>
-                            <p><i class="fas fa-clock me-2 text-muted"></i><strong>Arrival:</strong> {{ flight.arrival_time }}</p>
+                            <p><i class="far fa-clock me-2 text-muted"></i><strong>Departure:</strong> {{ flight.departure_time|date_format('%d %b %Y, %H:%M') }}</p>
+                            <p><i class="fas fa-clock me-2 text-muted"></i><strong>Arrival:</strong> {{ flight.arrival_time|date_format('%d %b %Y, %H:%M') }}</p>
                             <p><i class="fas fa-chair me-2 text-muted"></i><strong>Available Seats:</strong> {{ flight.available_seats }}</p>
                         </div>
                         <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">

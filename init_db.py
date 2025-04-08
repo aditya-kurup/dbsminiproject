@@ -85,7 +85,9 @@ def init_db():
         days_ahead = random.randint(1, 30)
         departure_date = (datetime.now() + timedelta(days=days_ahead)).replace(
             hour=random.randint(0, 23),
-            minute=random.choice([0, 15, 30, 45])
+            minute=random.choice([0, 15, 30, 45]),
+            second=0,  # Explicitly set seconds to 0
+            microsecond=0  # Explicitly set microseconds to 0
         )
         
         # Flight duration between 1-15 hours

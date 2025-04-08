@@ -46,8 +46,8 @@
                         <div class="flight-info">
                             <p><strong>From:</strong> {{ flight.origin }}</p>
                             <p><strong>To:</strong> {{ flight.destination }}</p>
-                            <p><strong>Departure:</strong> {{ flight.departure_time }}</p>
-                            <p><strong>Arrival:</strong> {{ flight.arrival_time }}</p>
+                            <p><strong>Departure:</strong> {{ flight.departure_time|date_format('%d %b %Y, %H:%M') }}</p>
+                            <p><strong>Arrival:</strong> {{ flight.arrival_time|date_format('%d %b %Y, %H:%M') }}</p>
                         </div>
                         <div class="flight-price">${{ flight.price }}</div>
                     </div>
