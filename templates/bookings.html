@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Bookings - Flight Booking System{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 style="text-align: center; margin: 2rem 0;">Your Bookings</h1>
+    
+    {% if bookings %}
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Flight</th>
+                            <th>Route</th>
+                            <th>Departure</th>
+                            <th>Passengers</th>
+                            <th>Total Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>{{ booking.id }}</td>
+                            <td>{{ booking.flight_number }}</td>
+                            <td>{{ booking.origin }} to {{ booking.destination }}</td>
+                            <td>{{ booking.departure_time }}</td>
+                            <td>{{ booking.total_passengers }}</td>
+                            <td>${{ booking.total_price }}</td>
+                            <td>
+                                <a href="{{ url_for('booking_confirmation', booking_id=booking.id) }}" class="btn">View Details</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 2rem; background-color: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+            <h3>You don't have any bookings yet.</h3>
+            <p>Start by searching for flights and booking your first trip!</p>
+            <a href="{{ url_for('search') }}" class="btn" style="margin-top: 1rem;">Search Flights</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

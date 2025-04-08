@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Flight Booking System{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <h1>Find Your Perfect Flight</h1>
+        <p>Search, compare, and book flights to destinations around the world</p>
+        <a href="{{ url_for('search') }}" class="btn btn-light btn-lg">
+            <i class="fas fa-search me-2"></i>Search Flights
+        </a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="py-5">
+        <h2 class="text-center mb-4">Upcoming Flights</h2>
+        
+        {% if flights %}
+            <div class="flight-cards">
+                {% for flight in flights %}
+                <div class="flight-card">
+                    <div class="flight-card-header">
+                        <h3><i class="fas fa-plane me-2"></i>{{ flight.flight_number }}</h3>
+                        <span><i class="fas fa-chair me-1"></i> {{ flight.available_seats }} seats</span>
+                    </div>
+                    <div class="flight-card-body">
+                        <div class="flight-info">
+                            <p><i class="fas fa-plane-departure me-2"></i><strong>From:</strong> {{ flight.origin }}</p>
+                            <p><i class="fas fa-plane-arrival me-2"></i><strong>To:</strong> {{ flight.destination }}</p>
+                            <p><i class="far fa-clock me-2"></i><strong>Departure:</strong> {{ flight.departure_time }}</p>
+                            <p><i class="fas fa-clock me-2"></i><strong>Arrival:</strong> {{ flight.arrival_time }}</p>
+                        </div>
+                        <div class="flight-price">${{ flight.price }}</div>
+                    </div>
+                    <div class="flight-card-footer">
+                        <a href="{{ url_for('flight_details', flight_id=flight.id) }}" class="btn btn-primary">
+                            <i class="fas fa-info-circle me-2"></i>View Details
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <p class="alert alert-info">No upcoming flights available at the moment.</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="bg-light py-5 rounded-3">
+        <div class="container text-center">
+            <h2 class="mb-4">Why Choose Us?</h2>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-tags fa-3x text-primary"></i>
+                            </div>
+                            <h3 class="h4">Best Prices</h3>
+                            <p>We guarantee the best prices for your flights with price match guarantee.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-ticket-alt fa-3x text-primary"></i>
+                            </div>
+                            <h3 class="h4">Easy Booking</h3>
+                            <p>Book your flights in just a few simple steps with our user-friendly platform.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="fas fa-headset fa-3x text-primary"></i>
+                            </div>
+                            <h3 class="h4">Customer Support</h3>
+                            <p>Our support team is available 24/7 to help you with any questions or concerns.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

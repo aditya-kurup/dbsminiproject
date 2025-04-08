@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}Book Flight - Flight Booking System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="text-center mb-4"><i class="fas fa-ticket-alt me-2"></i>Book Your Flight</h1>
+            
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="h4 m-0"><i class="fas fa-info-circle me-2"></i>Flight Details</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 class="h5 mb-3">{{ flight.flight_number }}</h3>
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="text-center me-4">
+                                    <h4 class="h6 mb-0">{{ flight.origin }}</h4>
+                                    <p class="small text-muted mb-0">Origin</p>
+                                </div>
+                                <div class="flex-grow-1 text-center">
+                                    <i class="fas fa-plane text-primary"></i>
+                                    <div class="progress my-2" style="height: 2px;">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-center ms-4">
+                                    <h4 class="h6 mb-0">{{ flight.destination }}</h4>
+                                    <p class="small text-muted mb-0">Destination</p>
+                                </div>
+                            </div>
+                            <p><i class="far fa-clock me-2 text-muted"></i><strong>Departure:</strong> {{ flight.departure_time }}</p>
+                            <p><i class="fas fa-clock me-2 text-muted"></i><strong>Arrival:</strong> {{ flight.arrival_time }}</p>
+                            <p><i class="fas fa-chair me-2 text-muted"></i><strong>Available Seats:</strong> {{ flight.available_seats }}</p>
+                        </div>
+                        <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                            <div class="mb-2">Price per Person</div>
+                            <div class="flight-price mb-3">${{ flight.price }}</div>
+                            <input type="hidden" id="base_price" value="{{ flight.price }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="h4 m-0"><i class="fas fa-users me-2"></i>Passenger Information</h2>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        <div class="mb-4">
+                            <label for="passengers_count" class="form-label">Number of Passengers</label>
+                            <select class="form-select" id="passengers_count" name="passengers_count">
+                                {% for i in range(1, flight.available_seats + 1) %}
+                                    {% if i <= 5 %}
+                                        <option value="{{ i }}">{{ i }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div id="passenger-forms">
+                            <!-- Passenger forms will be generated here by JavaScript -->
+                        </div>
+                        
+                        <div class="card bg-light border-0 mt-4 mb-4">
+                            <div class="card-body text-end p-3">
+                                <h3 class="h5">Total Price: <span id="total_price" class="text-primary">${{ flight.price }}</span></h3>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-check-circle me-2"></i>Complete Booking
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize forms when page loads
+        updatePassengerForms();
+        
+        // Add event listener to passenger count dropdown
+        const passengerCount = document.getElementById('passengers_count');
+        if (passengerCount) {
+            passengerCount.addEventListener('change', updatePassengerForms);
+        }
+        
+        // Update total price when passenger count changes
+        function updateTotalPrice() {
+            const count = document.getElementById('passengers_count').value;
+            const basePrice = document.getElementById('base_price').value;
+            const totalPriceElement = document.getElementById('total_price');
+            
+            if (totalPriceElement && basePrice) {
+                const totalPrice = parseFloat(basePrice) * parseInt(count);
+                totalPriceElement.textContent = '$' + totalPrice.toFixed(2);
+            }
+        }
+        
+        // Function to initialize any date pickers
+        function initializeDatepickers() {
+            // This function can be expanded if using a date picker library
+            const dateFields = document.querySelectorAll('input[type="date"]');
+            // Additional date picker initialization if needed
+        }
+        
+        // Override the updatePassengerForms function to use Bootstrap styling
+        function updatePassengerForms() {
+            const passengerCount = document.getElementById('passengers_count').value;
+            const passengerForms = document.getElementById('passenger-forms');
+            
+            // Clear current forms
+            passengerForms.innerHTML = '';
+            
+            // Create forms for each passenger
+            for (let i = 1; i <= passengerCount; i++) {
+                const passengerCard = document.createElement('div');
+                passengerCard.className = 'card mb-4 border-0 shadow-sm';
+                
+                passengerCard.innerHTML = `
+                    <div class="card-header bg-light">
+                        <h3 class="h5 mb-0"><i class="fas fa-user me-2"></i>Passenger ${i}</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="first_name_${i}" class="form-label">First Name*</label>
+                                    <input type="text" class="form-control" id="first_name_${i}" name="first_name_${i}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="last_name_${i}" class="form-label">Last Name*</label>
+                                    <input type="text" class="form-control" id="last_name_${i}" name="last_name_${i}" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dob_${i}" class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control datepicker" id="dob_${i}" name="dob_${i}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="passport_${i}" class="form-label">Passport Number</label>
+                                    <input type="text" class="form-control" id="passport_${i}" name="passport_${i}">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="phone_${i}" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone_${i}" name="phone_${i}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                passengerForms.appendChild(passengerCard);
+            }
+            
+            // Re-initialize datepickers for newly created forms
+            initializeDatepickers();
+            
+            // Update total price
+            updateTotalPrice();
+        }
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

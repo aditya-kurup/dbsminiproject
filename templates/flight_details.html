@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Flight Details - Flight Booking System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="text-center mb-4"><i class="fas fa-plane me-2"></i>Flight Details</h1>
+            
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h3 m-0"><i class="fas fa-plane me-2"></i>{{ flight.flight_number }}</h2>
+                        <span class="badge bg-light text-primary fw-bold fs-5">${{ flight.price }}</span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="text-center me-4">
+                                    <h3 class="h5 mb-0">{{ flight.origin }}</h3>
+                                    <p class="small text-muted mb-0">Origin</p>
+                                </div>
+                                <div class="flex-grow-1 text-center">
+                                    <i class="fas fa-plane fa-2x text-primary"></i>
+                                    <div class="progress my-2" style="height: 2px;">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"></div>
+                                    </div>
+                                    {% set departure = flight.departure_time|datetime %}
+                                    {% set arrival = flight.arrival_time|datetime %}
+                                    {% set duration = (arrival - departure).seconds // 60 %}
+                                    <small class="text-muted">{{ duration // 60 }}h {{ duration % 60 }}m</small>
+                                </div>
+                                <div class="text-center ms-4">
+                                    <h3 class="h5 mb-0">{{ flight.destination }}</h3>
+                                    <p class="small text-muted mb-0">Destination</p>
+                                </div>
+                            </div>
+
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 bg-light">
+                                        <div class="card-body">
+                                            <h4 class="h5 mb-3"><i class="fas fa-plane-departure me-2 text-primary"></i>Departure</h4>
+                                            <p class="mb-1"><strong>Date:</strong> {{ flight.departure_time|date_format('%d %b %Y') }}</p>
+                                            <p class="mb-1"><strong>Time:</strong> {{ flight.departure_time|date_format('%H:%M') }}</p>
+                                            <p class="mb-0"><strong>Airport:</strong> {{ flight.origin }} International</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 bg-light">
+                                        <div class="card-body">
+                                            <h4 class="h5 mb-3"><i class="fas fa-plane-arrival me-2 text-primary"></i>Arrival</h4>
+                                            <p class="mb-1"><strong>Date:</strong> {{ flight.arrival_time|date_format('%d %b %Y') }}</p>
+                                            <p class="mb-1"><strong>Time:</strong> {{ flight.arrival_time|date_format('%H:%M') }}</p>
+                                            <p class="mb-0"><strong>Airport:</strong> {{ flight.destination }} International</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card border-0 bg-light h-100">
+                                <div class="card-body">
+                                    <h3 class="h5 mb-3"><i class="fas fa-info-circle me-2 text-primary"></i>Flight Summary</h3>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><i class="fas fa-plane me-2 text-muted"></i><strong>Flight:</strong> {{ flight.flight_number }}</li>
+                                        <li class="mb-2"><i class="fas fa-dollar-sign me-2 text-muted"></i><strong>Price:</strong> ${{ flight.price }}</li>
+                                        <li class="mb-2"><i class="fas fa-chair me-2 text-muted"></i><strong>Available Seats:</strong> {{ flight.available_seats }} / {{ flight.total_seats }}</li>
+                                    </ul>
+                                    
+                                    <div class="mt-4">
+                                        {% if 'user_id' in session %}
+                                            {% if flight.available_seats > 0 %}
+                                                <a href="{{ url_for('book_flight', flight_id=flight.id) }}" class="btn btn-primary btn-lg w-100">
+                                                    <i class="fas fa-ticket-alt me-2"></i>Book This Flight
+                                                </a>
+                                            {% else %}
+                                                <button class="btn btn-secondary btn-lg w-100" disabled>
+                                                    <i class="fas fa-times-circle me-2"></i>No Seats Available
+                                                </button>
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="alert alert-info">
+                                                <i class="fas fa-info-circle me-2"></i>Please <a href="{{ url_for('login') }}">log in</a> to book this flight.
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <a href="{{ url_for('flights') }}" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-arrow-left me-2"></i>Back to All Flights
+                </a>
+                <a href="{{ url_for('search') }}" class="btn btn-primary">
+                    <i class="fas fa-search me-2"></i>Search Flights
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}All Flights - Flight Booking System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <h1 class="text-center mb-4"><i class="fas fa-plane me-2"></i>Available Flights</h1>
+            
+            <div class="text-center mb-4">
+                <p class="lead">Browse all available flights or use our <a href="{{ url_for('search') }}">search tool</a> to find specific flights.</p>
+                <div class="mt-3">
+                    <a href="{{ url_for('search') }}" class="btn btn-primary">
+                        <i class="fas fa-search me-2"></i>Advanced Search
+                    </a>
+                </div>
+            </div>
+            
+            <div>
+                {% if flights %}
+                    <div class="flight-cards">
+                        {% for flight in flights %}
+                        <div class="flight-card">
+                            <div class="flight-card-header">
+                                <h3><i class="fas fa-plane me-2"></i>{{ flight.flight_number }}</h3>
+                                <span><i class="fas fa-chair me-1"></i> {{ flight.available_seats }} seats</span>
+                            </div>
+                            <div class="flight-card-body">
+                                <div class="flight-info">
+                                    <p><i class="fas fa-plane-departure me-2"></i><strong>From:</strong> {{ flight.origin }}</p>
+                                    <p><i class="fas fa-plane-arrival me-2"></i><strong>To:</strong> {{ flight.destination }}</p>
+                                    <p><i class="far fa-clock me-2"></i><strong>Departure:</strong> {{ flight.departure_time }}</p>
+                                    <p><i class="fas fa-clock me-2"></i><strong>Arrival:</strong> {{ flight.arrival_time }}</p>
+                                </div>
+                                <div class="flight-price">${{ flight.price }}</div>
+                            </div>
+                            <div class="flight-card-footer">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{ url_for('flight_details', flight_id=flight.id) }}" class="btn btn-primary">
+                                        <i class="fas fa-info-circle me-1"></i> Details
+                                    </a>
+                                    {% if 'user_id' in session %}
+                                    <a href="{{ url_for('book_flight', flight_id=flight.id) }}" class="btn btn-success">
+                                        <i class="fas fa-ticket-alt me-1"></i> Book
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="alert alert-info p-4 text-center">
+                        <i class="fas fa-info-circle fa-2x mb-3"></i>
+                        <h3>No flights available at the moment.</h3>
+                        <p>Please check back later or adjust your search criteria.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
