@@ -21,7 +21,6 @@ def search_flights(origin=None, destination=None, date=None):
         params.append(f"%{destination}%")
     
     if date:
-        # Match flights on the specified date
         try:
             date_obj = datetime.strptime(date, "%Y-%m-%d")
             start_date = date_obj.strftime("%Y-%m-%d 00:00:00")
@@ -30,10 +29,8 @@ def search_flights(origin=None, destination=None, date=None):
             params.append(start_date)
             params.append(end_date)
         except ValueError:
-            # Handle invalid date format
             print(f"Invalid date format: {date}")
     
-    # Only show flights that still have seats available
     query += " AND available_seats > 0"
     query += " ORDER BY departure_time ASC"
     
@@ -67,7 +64,6 @@ def update_flight_seats(flight_id, seats_to_book):
     cursor = conn.cursor()
     
     try:
-        # Get current available seats
         cursor.execute("SELECT available_seats FROM flights WHERE id = ?", (flight_id,))
         flight = cursor.fetchone()
         
@@ -75,7 +71,6 @@ def update_flight_seats(flight_id, seats_to_book):
             conn.close()
             return False
         
-        # Update available seats
         new_seats = flight['available_seats'] - seats_to_book
         cursor.execute(
             "UPDATE flights SET available_seats = ? WHERE id = ?",

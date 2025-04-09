@@ -7,9 +7,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-app.config['PERMANENT_SESSION_LIFETIME'] = 1800  # 30 minutes
+app.config['PERMANENT_SESSION_LIFETIME'] = 1800
 
-# Middleware to check if user is logged in
 def login_required(view):
     def wrapped_view(**kwargs):
         if 'user_id' not in session:
@@ -19,14 +18,11 @@ def login_required(view):
     wrapped_view.__name__ = view.__name__
     return wrapped_view
 
-# Home page
 @app.route('/')
 def index():
-    # Get a few upcoming flights for display
     upcoming_flights = get_all_flights(limit=6)
     return render_template('index.html', flights=upcoming_flights)
 
-# User authentication routes
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -74,14 +70,12 @@ def logout():
     flash('You have been logged out', 'info')
     return redirect(url_for('index'))
 
-# User dashboard
 @app.route('/dashboard')
 @login_required
 def dashboard():
     bookings = get_user_bookings(session['user_id'])
     return render_template('dashboard.html', bookings=bookings)
 
-# Flight routes
 @app.route('/flights')
 def flights():
     all_flights = get_all_flights()
@@ -96,7 +90,6 @@ def flight_details(flight_id):
     
     return render_template('flight_details.html', flight=flight)
 
-# Search routes
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
@@ -115,7 +108,6 @@ def search():
     
     return render_template('search.html')
 
-# API for live search
 @app.route('/api/flights')
 def api_flights():
     origin = request.args.get('origin')
@@ -125,7 +117,6 @@ def api_flights():
     flights = search_flights(origin, destination, date)
     return jsonify(flights)
 
-# Booking routes
 @app.route('/book/<int:flight_id>', methods=['GET', 'POST'])
 @login_required
 def book_flight(flight_id):
@@ -137,7 +128,6 @@ def book_flight(flight_id):
     if request.method == 'POST':
         passengers_count = int(request.form.get('passengers_count', 1))
         
-        # Collect passenger details
         passenger_details = []
         for i in range(1, passengers_count + 1):
             passenger = {
@@ -149,7 +139,6 @@ def book_flight(flight_id):
             }
             passenger_details.append(passenger)
         
-        # Create booking
         booking_id = create_booking(session['user_id'], flight_id, passengers_count, passenger_details)
         if booking_id:
             flash('Booking successful!', 'success')
@@ -183,7 +172,6 @@ def booking_details(booking_id):
                           booking=booking_info['booking'], 
                           passengers=booking_info['passengers'])
 
-# Error handlers
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
@@ -192,7 +180,6 @@ def page_not_found(e):
 def server_error(e):
     return render_template('500.html'), 500
 
-# Format date filter for templates
 @app.template_filter('date_format')
 def date_format(value, format='%Y-%m-%d %H:%M'):
     if value is None:
@@ -200,7 +187,6 @@ def date_format(value, format='%Y-%m-%d %H:%M'):
     
     if isinstance(value, str):
         try:
-            # Try different date formats with and without microseconds
             for fmt in ['%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M']:
                 try:
                     value = datetime.strptime(value, fmt)
@@ -217,7 +203,6 @@ def date_format(value, format='%Y-%m-%d %H:%M'):
         print(f"Error formatting date: {e}")
         return str(value)
 
-# Add datetime filter to convert string to datetime object
 @app.template_filter('datetime')
 def parse_datetime(value):
     if value is None:
@@ -225,13 +210,11 @@ def parse_datetime(value):
         
     if isinstance(value, str):
         try:
-            # Try different date formats with and without microseconds
             for fmt in ['%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d %H:%M']:
                 try:
                     return datetime.strptime(value, fmt)
                 except ValueError:
                     continue
-            # If no format matches, return the original string
             return value
         except Exception as e:
             print(f"Error parsing datetime: {e}")

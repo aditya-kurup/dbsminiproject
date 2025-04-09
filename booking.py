@@ -10,7 +10,6 @@ def create_booking(user_id, flight_id, passengers_count, passenger_details):
     cursor = conn.cursor()
     
     try:
-        # Get flight details to calculate total price
         flight = get_flight_by_id(flight_id)
         if not flight or flight['available_seats'] < passengers_count:
             conn.close()
@@ -18,19 +17,16 @@ def create_booking(user_id, flight_id, passengers_count, passenger_details):
         
         total_price = flight['price'] * passengers_count
         
-        # Update available seats in the flight
         if not update_flight_seats(flight_id, passengers_count):
             conn.close()
             return None
         
-        # Create booking record
         cursor.execute(
             "INSERT INTO bookings (user_id, flight_id, total_passengers, total_price) VALUES (?, ?, ?, ?)",
             (user_id, flight_id, passengers_count, total_price)
         )
         booking_id = cursor.lastrowid
         
-        # Add passenger details
         for passenger in passenger_details:
             cursor.execute(
                 """
@@ -60,7 +56,6 @@ def get_user_bookings(user_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Join bookings with flights to get flight details
     cursor.execute(
         """
         SELECT b.*, f.flight_number, f.origin, f.destination, f.departure_time
@@ -84,7 +79,6 @@ def get_booking_details(booking_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Get booking information
     cursor.execute(
         """
         SELECT b.*, f.flight_number, f.origin, f.destination, 
@@ -101,7 +95,6 @@ def get_booking_details(booking_id):
         conn.close()
         return None
     
-    # Get passenger information
     cursor.execute(
         "SELECT * FROM passengers WHERE booking_id = ?",
         (booking_id,)
